@@ -13,7 +13,7 @@ public:
 
     void addPlayer(Player& player);
 
-    void playGame();
+    size_t playGame(size_t firstPlayer);
 
     Player* findPlayer(const std::string& name);
 
@@ -25,8 +25,13 @@ public:
 
     void endGame();
 
+    void playFullGame();
+
+    void resetPlayers();
+
 private:
     std::vector<Player*> players;
+    std::vector<int> wins;
     Deck deck;
 };
 

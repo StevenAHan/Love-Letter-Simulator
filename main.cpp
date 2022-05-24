@@ -36,6 +36,6 @@ int main() {
     game.addPlayer(jon);
 
     // 3. Play the game
-    game.playGame();
+    game.playFullGame();
 
 }

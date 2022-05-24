@@ -20,7 +20,7 @@ void Game::addPlayer(Player& player) {
     player.setGame(this);
 }
 
-void Game::playGame()
+size_t Game::playGame(size_t firstPlayer)
 {
     // Create a deck
     deck = Deck(players.size());
@@ -39,7 +39,7 @@ void Game::playGame()
     weakDiscard(deck.drawCard());
 
     // Player 1 starts
-    int i = 0;
+    int i = firstPlayer;
     int prevPlayer = -1;
     bool ongoing = true;
 
@@ -110,16 +110,25 @@ void Game::playGame()
 
     // Determine Victor
     if(!ongoing)
+    {
         cout << players[i]->getName() << " is the victor!" << endl;
+        return i;
+    }
     else
     {
-        Player* currMax = players[0];
-        for(Player* player : players)
+        size_t currMax = 0;
+        for(size_t i = 0; i < players.size(); i++)
         {
-            if(player->isAlive() && player->getCurrCardNum() > currMax->getCurrCardNum())
-                currMax = player;
+            if(players[i]->isAlive())
+                players[i]->showCurrCard();
+            else
+                cout << players[i]->getName() << " is dead!" << endl;
+            cout << endl;
+            if(players[i]->isAlive() && players[i]->getCurrCardNum() > players[currMax]->getCurrCardNum())
+                currMax = i;
         }
-        cout << currMax->getName() << " is the victor!" << endl;
+        cout << players[currMax]->getName() << " is the victor!" << endl;
+        return currMax;
     }
 }
 
@@ -158,4 +167,36 @@ void Game::endGame()
         players[i]->deleteInv();
     }
     deck.reset();
+}
+
+void Game::playFullGame()
+{
+    cout << "Let us begin a game of Love Letter. First to five wins wins the game!" << endl;
+    cout << "Number of Players: " << players.size() << endl;
+    for(size_t i = 0; i < players.size(); i++)
+    {
+        cout << players[i]->getName() << endl;
+    }
+    size_t winner = 0;
+    wins = vector<int>(players.size());
+    while(wins[winner] < 5)
+    {
+        cout << "Current Standings: " << endl;
+        for(size_t i = 0; i < players.size(); i++)
+        {
+            cout << players[i]->getName() << ": " << wins[i] << endl;
+        }
+        winner = playGame(winner);
+        wins[winner] += 1;
+        resetPlayers();
+    }
+    cout << players[winner] << " is the winner of the game as they have won five rounds! Good Job!" << endl;
+}
+
+void Game::resetPlayers()
+{
+    for(size_t i = 0; i < players.size(); i++)
+    {
+        players[i]->reset();
+    }
 }

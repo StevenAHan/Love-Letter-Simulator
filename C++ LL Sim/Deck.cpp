@@ -87,7 +87,7 @@ void Deck::shuffleDeck()
     srand(time(0));
     int val = rand() % 100;
     for(size_t i = 0;
-    i < val; i++)
+        i < val; i++)
         random_shuffle(deckOfCards.begin(), deckOfCards.end());
 }
 

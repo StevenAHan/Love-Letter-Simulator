@@ -5,7 +5,7 @@ using namespace std;
 
 // Player Class Code
 Player::Player(const string& name) :
-    name(name), currCard(nullptr), drawnCard(nullptr), alive(true), immunity(false) {}
+        name(name), currCard(nullptr), drawnCard(nullptr), alive(true), immunity(false) {}
 
 Player::~Player()
 {
@@ -39,14 +39,14 @@ void Player::loseCard()
 {
     if(currCard == nullptr)
     {
-        cout << name << " discarded " << drawnCard->getName() << endl;
+        cout << name << " discarded a " << drawnCard->getName() << " (" << drawnCard->getNum() << ")" << endl;
         drawnCard->setPlayer(nullptr);
         currGame->weakDiscard(drawnCard);
         drawnCard = nullptr;
     }
     else
     {
-        cout << name << " discarded " << currCard->getName() << endl;
+        cout << name << " discarded a " << currCard->getName() << " (" << currCard->getNum() << ")" << endl;
         if(currCard->getName() == "Princess")
         {
             cout << "That's the Princess! Guess you die!\n";
@@ -151,16 +151,16 @@ void Player::swap(Player* other)
 
 void Player::showCurrCard() const
 {
-    cout << name << " is currently holding a " <<currCard->getName() << endl;
+    cout << name << " is currently holding a " <<currCard->getName() << " (" << currCard->getNum() << ")" << endl;
 }
 
 bool Player::hasCountessConditions() const {
     if (currCard->getName() == "Countess")
         if (drawnCard->getNum() >= 5 && drawnCard->getNum() < 8)
             return true;
-    else if (drawnCard->getNum() == 7)
-        if (currCard->getNum() >= 5 && currCard->getNum() < 8)
-            return true;
+        else if (drawnCard->getNum() == 7)
+            if (currCard->getNum() >= 5 && currCard->getNum() < 8)
+                return true;
     return false;
 }
 
@@ -180,4 +180,11 @@ void Player::deleteInv()
         delete currCard;
     if(drawnCard)
         delete drawnCard;
+}
+
+void Player::reset()
+{
+    deleteInv();
+    alive = true;
+    immunity = false;
 }
