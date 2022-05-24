@@ -55,6 +55,8 @@ public:
 
     void deleteInv();
 
+    void reset();
+
 private:
     std::string name;
     bool alive;
